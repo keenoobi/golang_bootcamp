@@ -1,4 +1,4 @@
-# Day 00 - Go Boot camp
+# Day 00 — Go Boot camp
 
 ## Statistics being handy
 
