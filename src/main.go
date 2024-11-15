@@ -1,8 +1,13 @@
+//go:build !test
+// +build !test
+
 package main
 
 import (
+	"bufio"
 	"flag"
 	"fmt"
+	"os"
 	"sort"
 )
 
@@ -20,15 +25,15 @@ func main() {
 		*modeFlag = true
 		*sdFlag = true
 	}
-
-	numbers, err := parseInput()
+	reader := bufio.NewReader(os.Stdin)
+	numbers, err := parseInput(reader)
 	if err != nil {
-		fmt.Println("Error: ", err)
+		fmt.Println("error: ", err)
 		return
 	}
 
 	if len(numbers) == 0 {
-		fmt.Println("Error: No valid numbers.")
+		fmt.Println("error: no valid numbers")
 		return
 	}
 

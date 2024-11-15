@@ -19,7 +19,7 @@ func meadian(numbers []int) float64 {
 	if n%2 == 1 {
 		return float64(numbers[n/2])
 	}
-	return float64(numbers[n/2-1]) + float64(numbers[n/2])/2
+	return (float64(numbers[n/2-1]) + float64(numbers[n/2])) / 2
 }
 
 func mode(numbers []int) int {

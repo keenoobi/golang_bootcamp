@@ -3,13 +3,11 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"os"
 	"strconv"
 	"strings"
 )
 
-func parseInput() ([]int, error) {
-	reader := bufio.NewReader(os.Stdin)
+func parseInput(reader *bufio.Reader) ([]int, error) {
 	var numbers []int
 	for {
 		input, err := reader.ReadString('\n')
@@ -23,7 +21,7 @@ func parseInput() ([]int, error) {
 		}
 		num, err1 := strconv.Atoi(input)
 		if err1 != nil || num < -100000 || num > 1000000 {
-			return nil, fmt.Errorf("Invalid input. The number is incorrect.")
+			return nil, fmt.Errorf("invalid input: the number is incorrect")
 		}
 
 		numbers = append(numbers, num)
