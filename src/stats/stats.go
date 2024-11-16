@@ -1,10 +1,10 @@
-package main
+package stats
 
 import (
 	"math"
 )
 
-func mean(array []int) float64 {
+func Mean(array []int) float64 {
 	sum := 0
 	for _, num := range array {
 		sum += num
@@ -14,7 +14,7 @@ func mean(array []int) float64 {
 	return result
 }
 
-func meadian(numbers []int) float64 {
+func Meadian(numbers []int) float64 {
 	n := len(numbers)
 	if n%2 == 1 {
 		return float64(numbers[n/2])
@@ -22,7 +22,7 @@ func meadian(numbers []int) float64 {
 	return (float64(numbers[n/2-1]) + float64(numbers[n/2])) / 2
 }
 
-func mode(numbers []int) int {
+func Mode(numbers []int) int {
 	maxCount := 0
 	currentCount := 1
 	mode := numbers[0]
@@ -46,7 +46,7 @@ func mode(numbers []int) int {
 	return mode
 }
 
-func standardDeviation(numbers []int, mean float64) float64 {
+func StandardDeviation(numbers []int, mean float64) float64 {
 	sum := 0.0
 	for _, num := range numbers {
 		sum += math.Pow(float64(num)-mean, 2)

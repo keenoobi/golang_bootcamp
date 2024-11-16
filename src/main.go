@@ -1,6 +1,3 @@
-//go:build !test
-// +build !test
-
 package main
 
 import (
@@ -8,11 +5,13 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	p "project/parser"
+	s "project/stats"
 	"sort"
 )
 
 func main() {
-	meanFlag := flag.Bool("mean", false, "Print the mean")
+	meanFlag := flag.Bool("mean", false, "Print the mean test")
 	meadianFlag := flag.Bool("median", false, "Print the median")
 	modeFlag := flag.Bool("mode", false, "Print the mode")
 	sdFlag := flag.Bool("sd", false, "Print the standard deviation")
@@ -26,7 +25,7 @@ func main() {
 		*sdFlag = true
 	}
 	reader := bufio.NewReader(os.Stdin)
-	numbers, err := parseInput(reader)
+	numbers, err := p.ParseInput(reader)
 	if err != nil {
 		fmt.Println("error: ", err)
 		return
@@ -40,15 +39,15 @@ func main() {
 	sort.Ints(numbers)
 
 	if *meanFlag {
-		fmt.Printf("Mean: %.2f\n", mean(numbers))
+		fmt.Printf("Mean: %.2f\n", s.Mean(numbers))
 	}
 	if *meadianFlag {
-		fmt.Printf("Median: %.2f\n", meadian(numbers))
+		fmt.Printf("Median: %.2f\n", s.Meadian(numbers))
 	}
 	if *modeFlag {
-		fmt.Printf("Mode: %d\n", mode(numbers))
+		fmt.Printf("Mode: %d\n", s.Mode(numbers))
 	}
 	if *sdFlag {
-		fmt.Printf("SD: %.2f\n", standardDeviation(numbers, mean(numbers)))
+		fmt.Printf("SD: %.2f\n", s.StandardDeviation(numbers, s.Mean(numbers)))
 	}
 }

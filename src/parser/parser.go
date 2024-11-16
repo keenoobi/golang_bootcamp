@@ -1,4 +1,4 @@
-package main
+package parser
 
 import (
 	"bufio"
@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func parseInput(reader *bufio.Reader) ([]int, error) {
+func ParseInput(reader *bufio.Reader) ([]int, error) {
 	var numbers []int
 	for {
 		input, err := reader.ReadString('\n')
