@@ -5,8 +5,8 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	p "project/parser"
-	s "project/stats"
+	"project/parser"
+	"project/stats"
 	"sort"
 )
 
@@ -25,29 +25,29 @@ func main() {
 		*sdFlag = true
 	}
 	reader := bufio.NewReader(os.Stdin)
-	numbers, err := p.ParseInput(reader)
+	numbers, err := parser.ParseInput(reader)
 	if err != nil {
-		fmt.Println("error: ", err)
+		fmt.Println("Error: ", err)
 		return
 	}
 
 	if len(numbers) == 0 {
-		fmt.Println("error: no valid numbers")
+		fmt.Println("Error: no valid numbers")
 		return
 	}
 
 	sort.Ints(numbers)
 
 	if *meanFlag {
-		fmt.Printf("Mean: %.2f\n", s.Mean(numbers))
+		fmt.Printf("Mean: %.2f\n", stats.Mean(numbers))
 	}
 	if *meadianFlag {
-		fmt.Printf("Median: %.2f\n", s.Meadian(numbers))
+		fmt.Printf("Median: %.2f\n", stats.Meadian(numbers))
 	}
 	if *modeFlag {
-		fmt.Printf("Mode: %d\n", s.Mode(numbers))
+		fmt.Printf("Mode: %d\n", stats.Mode(numbers))
 	}
 	if *sdFlag {
-		fmt.Printf("SD: %.2f\n", s.StandardDeviation(numbers, s.Mean(numbers)))
+		fmt.Printf("SD: %.2f\n", stats.StandardDeviation(numbers, stats.Mean(numbers)))
 	}
 }
