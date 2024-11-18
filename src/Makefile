@@ -17,3 +17,5 @@ cover:
 
 clean:
 	@rm -rf coverage.* main
+	@go clean -testcache
+	@go clean -modcache
