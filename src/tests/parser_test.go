@@ -1,8 +1,9 @@
-package parser
+package test
 
 import (
 	"bufio"
 	"errors"
+	pr "project/internal/parser"
 	"strings"
 	"testing"
 )
@@ -22,7 +23,7 @@ func TestParseInput(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			reader := bufio.NewReader(strings.NewReader(tt.input))
-			numbers, err := ParseInput(reader)
+			numbers, err := pr.ParseInput(reader)
 			if err != nil && tt.expectedErr == nil {
 				t.Errorf("Unexpected error: %v", err)
 			} else if err == nil && tt.expectedErr != nil {

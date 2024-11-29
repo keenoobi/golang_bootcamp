@@ -1,7 +1,8 @@
-package stats
+package test
 
 import (
 	"math"
+	"project/internal/stats"
 	"testing"
 )
 
@@ -19,7 +20,7 @@ func TestMeanTableDriven(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			result := Mean(tt.numbers)
+			result := stats.Mean(tt.numbers)
 			if result != tt.expected {
 				t.Errorf("Expected %f, but got %f", tt.expected, result)
 			}
@@ -41,7 +42,7 @@ func TestMedianTableDriven(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			result := Meadian(tt.numbers)
+			result := stats.Meadian(tt.numbers)
 			if result != tt.expected {
 				t.Errorf("Expected %f, but got %f", tt.expected, result)
 			}
@@ -63,7 +64,7 @@ func TestModeTableDriven(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			result := Mode(tt.numbers)
+			result := stats.Mode(tt.numbers)
 			if result != tt.expected {
 				t.Errorf("Expected %d, but got %d", tt.expected, result)
 			}
@@ -85,8 +86,8 @@ func TestStandardDeviationTableDriven(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			meanValue := Mean(tt.numbers)
-			result := StandardDeviation(tt.numbers, meanValue)
+			meanValue := stats.Mean(tt.numbers)
+			result := stats.StandardDeviation(tt.numbers, meanValue)
 			if math.Abs(result-tt.expected) > 1e-6 {
 				t.Errorf("Expected %f, but got %f", tt.expected, result)
 			}

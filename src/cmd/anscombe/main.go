@@ -5,8 +5,8 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"project/parser"
-	"project/stats"
+	"project/internal/parser"
+	"project/internal/stats"
 	"sort"
 )
 

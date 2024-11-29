@@ -1,18 +1,13 @@
-
-
 all: build
 
-build: main.go
-	@go build main.go
-
-run: build
-	@./main < input.txt
+build:
+	@go build -o bin/ -v ./cmd/anscombe 
 
 test:
-	@go test project/parser project/stats     
+	@go test -v project/tests
 
 cover:
-	@go test project/parser project/stats -coverprofile=coverage.out -v
+	@go test -v project/tests -coverprofile=coverage.out 
 	@go tool cover -html=coverage.out -o coverage.html && open coverage.html
 
 clean:
