@@ -20,7 +20,7 @@ func ParseInput(reader *bufio.Reader) ([]int, error) {
 			continue
 		}
 		num, err1 := strconv.Atoi(input)
-		if err1 != nil || num < -100000 || num > 1000000 {
+		if err1 != nil || num < -100000 || num > 100000 {
 			return nil, fmt.Errorf("invalid input: the number is incorrect")
 		}
 

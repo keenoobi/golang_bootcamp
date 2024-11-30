@@ -17,6 +17,8 @@ func TestParseInput(t *testing.T) {
 	}{
 		{"Valid input", "1\n2\n3\n", []int{1, 2, 3}, nil},
 		{"Invalid input", "1\nabc\n3\n", nil, errors.New("invalid input: the number is incorrect")},
+		{"Invalid input max+1", "100001\n", nil, errors.New("invalid input: the number is incorrect")},
+		{"Invalid input min-1", "-100001\n", nil, errors.New("invalid input: the number is incorrect")},
 		{"Empty input", "", []int{}, nil},
 	}
 

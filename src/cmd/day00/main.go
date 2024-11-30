@@ -24,8 +24,10 @@ func main() {
 		*modeFlag = true
 		*sdFlag = true
 	}
+
 	reader := bufio.NewReader(os.Stdin)
 	numbers, err := parser.ParseInput(reader)
+
 	if err != nil {
 		fmt.Println("error: ", err)
 		return
