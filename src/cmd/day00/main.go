@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	meanFlag := flag.Bool("mean", false, "Print the mean test")
+	meanFlag := flag.Bool("mean", false, "Print the mean")
 	meadianFlag := flag.Bool("median", false, "Print the median")
 	modeFlag := flag.Bool("mode", false, "Print the mode")
 	sdFlag := flag.Bool("sd", false, "Print the standard deviation")
