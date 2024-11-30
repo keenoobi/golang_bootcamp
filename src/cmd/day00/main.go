@@ -27,12 +27,12 @@ func main() {
 	reader := bufio.NewReader(os.Stdin)
 	numbers, err := parser.ParseInput(reader)
 	if err != nil {
-		fmt.Println("Error: ", err)
+		fmt.Println("error: ", err)
 		return
 	}
 
 	if len(numbers) == 0 {
-		fmt.Println("Error: no valid numbers")
+		fmt.Println("error: no valid numbers")
 		return
 	}
 
