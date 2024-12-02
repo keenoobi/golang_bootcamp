@@ -7,14 +7,14 @@ import (
 )
 
 type Ingredient struct {
-	IngredientName  string  `json:"ingredient_name" xml:"itemname"`
-	IngredientCount string  `json:"ingredient_count" xml:"itemcount"`
-	IngredientUnit  *string `json:"ingredient_unit,omitempty" xml:"itemunit,omitempty"`
+	ItemName  string  `json:"ingredient_name" xml:"itemname"`
+	ItemCount string  `json:"ingredient_count" xml:"itemcount"`
+	ItemUnit  *string `json:"ingredient_unit,omitempty" xml:"itemunit,omitempty"`
 }
 
 type Cake struct {
 	Name        string       `json:"name" xml:"name"`
-	Time        string       `json:"time" xml:"stovetime"`
+	StoveTime   string       `json:"time" xml:"stovetime"`
 	Ingredients []Ingredient `json:"ingredients" xml:"ingredients>item"`
 }
 
@@ -39,8 +39,6 @@ func PrintData(extension string, recipes Cakes) {
 			return
 		}
 		fmt.Println(string(json))
-	default:
-		fmt.Println("unsupported file extension")
 	}
 }
 

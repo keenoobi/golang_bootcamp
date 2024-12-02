@@ -1,6 +1,8 @@
 package main
 
 import (
+	"Go_Day01/internal/comparator"
+	"Go_Day01/internal/parser"
 	"flag"
 	"fmt"
 )
@@ -11,6 +13,33 @@ func main() {
 
 	flag.Parse()
 
-	fmt.Println(*old, *new)
+	if *old == "" || *new == "" {
+		fmt.Println("error: flag requires a file")
+		return
+	}
+
+	oldDBRreader, _, err := parser.GetReader(*old)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	newBDReader, _, err := parser.GetReader(*new)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	oldDBRecipes, err := oldDBRreader.Read(*old)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	newDBRecipes, err := newBDReader.Read(*new)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	comparator.CompareRecipes(oldDBRecipes, newDBRecipes)
 
 }

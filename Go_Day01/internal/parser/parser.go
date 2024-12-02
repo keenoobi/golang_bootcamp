@@ -58,6 +58,6 @@ func GetReader(filename string) (DBReader, string, error) {
 	case ".xml":
 		return XMLReader{}, extension, nil
 	default:
-		return nil, "", fmt.Errorf("unsupported file extension: %s", extension)
+		return nil, "", fmt.Errorf("unsupported file extension or file doesnt exis")
 	}
 }

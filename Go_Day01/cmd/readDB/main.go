@@ -11,6 +11,10 @@ func main() {
 	var filename string
 	flag.StringVar(&filename, "f", "", "Read the file")
 	flag.Parse()
+	if filename == "" {
+		fmt.Println("error: -f flag required")
+		return
+	}
 
 	reader, extension, err := parser.GetReader(filename)
 	if err != nil {
