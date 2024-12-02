@@ -1,5 +1,11 @@
 package data
 
+import (
+	"encoding/json"
+	"encoding/xml"
+	"fmt"
+)
+
 type Ingredient struct {
 	IngredientName  string  `json:"ingredient_name" xml:"itemname"`
 	IngredientCount string  `json:"ingredient_count" xml:"itemcount"`
@@ -14,4 +20,44 @@ type Cake struct {
 
 type Cakes struct {
 	Cake []Cake `json:"cake" xml:"cake"`
+}
+
+// Функция для вывода данных в другом формате
+func PrintData(extension string, recipes Cakes) {
+	switch extension {
+	case ".xml":
+		xml, err := ConvertDataToJSON(recipes)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		fmt.Println(string(xml))
+	case ".json":
+		json, err := ConvertDataToXML(recipes)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		fmt.Println(string(json))
+	default:
+		fmt.Println("unsupported file extension")
+	}
+}
+
+// функция для конвертации и вывода данных в формате XML
+func ConvertDataToXML(recipes Cakes) ([]byte, error) {
+	xmlData, err := xml.MarshalIndent(recipes, "", "    ")
+	if err != nil {
+		return nil, fmt.Errorf("cant convert to XML: %w", err)
+	}
+	return xmlData, nil
+}
+
+// функция для конвертации и вывода данных в формате JSON
+func ConvertDataToJSON(recipes Cakes) ([]byte, error) {
+	jsonData, err := json.MarshalIndent(recipes, "", "    ")
+	if err != nil {
+		return nil, fmt.Errorf("cant convert to JSON: %w", err)
+	}
+	return jsonData, nil
 }

@@ -6,6 +6,7 @@ import (
 	"encoding/xml"
 	"fmt"
 	"os"
+	"path/filepath"
 )
 
 type DBReader interface {
@@ -46,4 +47,17 @@ func (x XMLReader) Read(filename string) (data.Cakes, error) {
 	}
 
 	return cakes, nil
+}
+
+func GetReader(filename string) (DBReader, string, error) {
+	extension := filepath.Ext(filename)
+
+	switch extension {
+	case ".json":
+		return JSONReader{}, extension, nil
+	case ".xml":
+		return XMLReader{}, extension, nil
+	default:
+		return nil, "", fmt.Errorf("unsupported file extension: %s", extension)
+	}
 }
