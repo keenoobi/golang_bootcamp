@@ -1,7 +1,7 @@
 package main
 
 import (
-	"Go_Day01/internal/comparator"
+	"Go_Day01/internal/dbcomparator"
 	"Go_Day01/internal/parser"
 	"flag"
 	"fmt"
@@ -40,6 +40,6 @@ func main() {
 		return
 	}
 
-	comparator.CompareRecipes(oldDBRecipes, newDBRecipes)
+	dbcomparator.CompareRecipes(oldDBRecipes, newDBRecipes)
 
 }

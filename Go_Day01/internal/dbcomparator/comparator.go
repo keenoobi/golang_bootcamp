@@ -1,4 +1,4 @@
-package comparator
+package dbcomparator
 
 import (
 	"Go_Day01/internal/data"
