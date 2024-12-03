@@ -26,14 +26,14 @@ type Cakes struct {
 func PrintData(extension string, recipes Cakes) {
 	switch extension {
 	case ".xml":
-		xml, err := ConvertDataToJSON(recipes)
+		xml, err := сonvertDataToJSON(recipes)
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
 		fmt.Println(string(xml))
 	case ".json":
-		json, err := ConvertDataToXML(recipes)
+		json, err := сonvertDataToXML(recipes)
 		if err != nil {
 			fmt.Println(err)
 			return
@@ -43,7 +43,7 @@ func PrintData(extension string, recipes Cakes) {
 }
 
 // функция для конвертации и вывода данных в формате XML
-func ConvertDataToXML(recipes Cakes) ([]byte, error) {
+func сonvertDataToXML(recipes Cakes) ([]byte, error) {
 	xmlData, err := xml.MarshalIndent(recipes, "", "    ")
 	if err != nil {
 		return nil, fmt.Errorf("cant convert to XML: %w", err)
@@ -52,7 +52,7 @@ func ConvertDataToXML(recipes Cakes) ([]byte, error) {
 }
 
 // функция для конвертации и вывода данных в формате JSON
-func ConvertDataToJSON(recipes Cakes) ([]byte, error) {
+func сonvertDataToJSON(recipes Cakes) ([]byte, error) {
 	jsonData, err := json.MarshalIndent(recipes, "", "    ")
 	if err != nil {
 		return nil, fmt.Errorf("cant convert to JSON: %w", err)
