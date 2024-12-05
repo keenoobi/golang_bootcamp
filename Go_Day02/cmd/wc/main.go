@@ -27,15 +27,7 @@ func main() {
 	}
 
 	var wg sync.WaitGroup
-	if l {
-		wc.Counter(files, &wg, wc.CountLines)
-	}
-	if m {
-		wc.Counter(files, &wg, wc.CountChars)
-	}
-	if w {
-		wc.Counter(files, &wg, wc.CountWords)
-	}
+	wc.Counter(files, &wg, l, m, w)
 
 	wg.Wait()
 
