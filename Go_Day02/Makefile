@@ -13,23 +13,27 @@ PROJECT=go list ./... | grep -v /cmd/
 # Цель по умолчанию
 all: build test
 
+# Создание папки bin, если она не существует
+bin:
+	@mkdir -p bin
+
 # Сборка всех бинарных файлов
-build: build-find build-wc build-xargs build-rotate
+build: bin build-find build-wc build-xargs build-rotate
 
 # Сборка myFind
-build-find:
+build-find: bin
 	@$(GOBUILD) -o bin/$(BINARY_FIND) cmd/myFind/main.go
 
 # Сборка myWc
-build-wc:
+build-wc: bin
 	@$(GOBUILD) -o bin/$(BINARY_WC) cmd/myWc/main.go
 
 # Сборка myXargs
-build-xargs:
+build-xargs: bin
 	@$(GOBUILD) -o bin/$(BINARY_XARGS) cmd/myXargs/main.go
 
 # Сборка myRotate
-build-rotate:
+build-rotate: bin
 	@$(GOBUILD) -o bin/$(BINARY_ROTATE) cmd/myRotate/main.go
 
 # Очистка всех бинарных файлов
@@ -75,4 +79,4 @@ coverage:
 clean-coverage:
 	rm -f coverage.out coverage.html
 
-.PHONY: all build clean test run-find run-wc run-xargs run-rotate deps coverage clean-coverage
+.PHONY: all build clean test run-find run-wc run-xargs run-rotate deps coverage clean-coverage bin
