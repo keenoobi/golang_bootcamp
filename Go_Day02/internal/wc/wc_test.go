@@ -15,6 +15,9 @@ func TestCountAll(t *testing.T) {
 		}
 	}
 
+	// Удаляем тестовые файлы и директорию после завершения тестов
+	defer os.RemoveAll(testDir)
+
 	// Создаем тестовые файлы
 	createTestFile := func(name, content string) {
 		err := os.WriteFile(name, []byte(content), 0644)
@@ -22,11 +25,6 @@ func TestCountAll(t *testing.T) {
 			t.Fatalf("Failed to create test file %s: %v", name, err)
 		}
 	}
-
-	// Удаляем тестовые файлы и директорию после завершения тестов
-	defer func() {
-		os.RemoveAll(testDir)
-	}()
 
 	// Тест: Успешная обработка файла
 	t.Run("CountAll_Success", func(t *testing.T) {

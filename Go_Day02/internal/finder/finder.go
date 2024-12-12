@@ -38,6 +38,12 @@ func processSymlynk(path string) {
 	realPath, err := os.Readlink(path)
 	if err != nil {
 		fmt.Println(path, "-> [broken]")
+		return
+	}
+
+	// Проверяем, существует ли файл, на который указывает ссылка
+	if _, err := os.Stat(realPath); os.IsNotExist(err) {
+		fmt.Println(path, "-> [broken]")
 	} else {
 		fmt.Println(path, "->", realPath)
 	}
