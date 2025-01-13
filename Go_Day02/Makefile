@@ -17,7 +17,7 @@ all: build test
 bin:
 	@mkdir -p bin
 
-# Сборка всех бинарных файлов
+# Сборка билда
 build: bin build-find build-wc build-xargs build-rotate
 
 # Сборка myFind
@@ -51,19 +51,21 @@ test:
 
 # Запуск myFind с аргументами
 run-find: build-find
-	@./bin/$(BINARY_FIND) -f -ext 'go' /path/to/dir
+	@./bin/$(BINARY_FIND) -f -ext 'go' .
 
 # Запуск myWc с аргументами
 run-wc: build-wc
-	@./bin/$(BINARY_WC) -w input.txt
+	@./bin/$(BINARY_WC) -l Makefile
+	@./bin/$(BINARY_WC) -m Makefile
+	@./bin/$(BINARY_WC) -w Makefile
 
 # Запуск myXargs с аргументами
 run-xargs: build-xargs
 	@echo "cmd/\ninternal/\n../" | ./bin/$(BINARY_XARGS) ls -la
 
 # Запуск myRotate с аргументами
-run-rotate: build-rotate
-	@./bin/$(BINARY_ROTATE) /path/to/logs/some_application.log
+# run-rotate: build-rotate
+# 	@./bin/$(BINARY_ROTATE) /path/to/logs/some_application.log
 
 # Установка зависимостей
 deps:

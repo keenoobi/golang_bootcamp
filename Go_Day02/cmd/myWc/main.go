@@ -4,6 +4,7 @@ import (
 	"Go_Day02/internal/wc"
 	"flag"
 	"fmt"
+	"os"
 	"sync"
 )
 
@@ -15,11 +16,16 @@ func main() {
 
 	flag.Parse()
 
+	if l && m || l && w || m && w {
+		fmt.Fprintln(os.Stderr, "error: too many flags, only one at a time")
+		os.Exit(1)
+	}
+
 	files := flag.Args()
 
 	if len(files) == 0 {
-		fmt.Println("error: no file provided")
-		return
+		fmt.Fprintln(os.Stderr, "error: no file provided")
+		os.Exit(1)
 	}
 
 	if !l && !m && !w {
@@ -30,5 +36,4 @@ func main() {
 	wc.Counter(files, &wg, l, m, w)
 
 	wg.Wait()
-
 }

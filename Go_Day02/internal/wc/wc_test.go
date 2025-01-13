@@ -2,8 +2,81 @@ package wc
 
 import (
 	"os"
+	"sync"
 	"testing"
 )
+
+func TestCounter(t *testing.T) {
+	// Создаем директорию testdata, если она не существует
+	testDir := "testdata"
+	if _, err := os.Stat(testDir); os.IsNotExist(err) {
+		err := os.Mkdir(testDir, 0755) // Создаем директорию с правами 0755
+		if err != nil {
+			t.Fatalf("Failed to create test directory: %v", err)
+		}
+	}
+
+	// Удаляем тестовые файлы и директорию после завершения тестов
+	defer os.RemoveAll(testDir)
+
+	// Создаем тестовые файлы
+	createTestFile := func(name, content string) {
+		err := os.WriteFile(name, []byte(content), 0644)
+		if err != nil {
+			t.Fatalf("Failed to create test file %s: %v", name, err)
+		}
+	}
+
+	// Создаем тестовые файлы
+	createTestFile("testdata/test1.txt", "Hello world\nThis is a test\nFile for wc\n")
+	createTestFile("testdata/test2.txt", "Single line file")
+
+	// Тест: Успешная обработка нескольких файлов
+	t.Run("Counter_Success", func(t *testing.T) {
+		var wg sync.WaitGroup
+		files := []string{"testdata/test1.txt", "testdata/test2.txt"}
+		Counter(files, &wg, true, true, true)
+		wg.Wait()
+	})
+
+	// Тест: Обработка несуществующих файлов
+	t.Run("Counter_FileNotFound", func(t *testing.T) {
+		var wg sync.WaitGroup
+		files := []string{"testdata/nonexistent1.txt", "testdata/nonexistent2.txt"}
+		Counter(files, &wg, true, true, true)
+		wg.Wait()
+	})
+
+	// Тест: Обработка файлов с разными флагами
+	t.Run("Counter_WithFlags", func(t *testing.T) {
+		var wg sync.WaitGroup
+		files := []string{"testdata/test1.txt", "testdata/test2.txt"}
+
+		// Проверяем только флаг -l
+		t.Run("Counter_FlagL", func(t *testing.T) {
+			Counter(files, &wg, true, false, false)
+			wg.Wait()
+		})
+
+		// Проверяем только флаг -m
+		t.Run("Counter_FlagM", func(t *testing.T) {
+			Counter(files, &wg, false, true, false)
+			wg.Wait()
+		})
+
+		// Проверяем только флаг -w
+		t.Run("Counter_FlagW", func(t *testing.T) {
+			Counter(files, &wg, false, false, true)
+			wg.Wait()
+		})
+
+		// Проверяем все флаги
+		t.Run("Counter_AllFlags", func(t *testing.T) {
+			Counter(files, &wg, true, true, true)
+			wg.Wait()
+		})
+	})
+}
 
 func TestCountAll(t *testing.T) {
 	// Создаем директорию testdata, если она не существует

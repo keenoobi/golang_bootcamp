@@ -4,6 +4,8 @@ import (
 	"archive/tar"
 	"compress/gzip"
 	"os"
+	"path/filepath"
+	"strings"
 	"testing"
 	"time"
 )
@@ -17,42 +19,75 @@ func TestArchiveLog(t *testing.T) {
 	// Устанавливаем MTIME для тестового файла
 	os.Chtimes(logFile, time.Now(), time.Unix(1600785299, 0))
 
+	// Автоматически удаляем тестовые файлы после завершения тестов
+	t.Cleanup(func() {
+		os.Remove(logFile)
+		os.RemoveAll("testdata")
+	})
+
 	// Тест: Успешная архивация файла
 	t.Run("ArchiveLog_Success", func(t *testing.T) {
-		err := ArchiveLog(logFile, "")
+		// Создаём временную директорию для архива
+		archiveDir := "testdata/archive"
+		os.MkdirAll(archiveDir, 0755)
+		defer os.RemoveAll(archiveDir)
+
+		err := ArchiveLog(logFile, archiveDir)
 		if err != nil {
 			t.Fatalf("Error archiving log file: %v", err)
 		}
 
 		// Проверяем, что архив создан
-		archiveName := "test.log_1600785299.tar.gz"
+		archiveName := filepath.Join(archiveDir, "test.log_1600785299.tar.gz")
 		if _, err := os.Stat(archiveName); os.IsNotExist(err) {
 			t.Fatalf("Archive file %s was not created", archiveName)
 		}
-
-		// Удаляем архив
-		os.Remove(archiveName)
 	})
 
-	// Тест: Файл не существует
-	t.Run("ArchiveLog_FileNotFound", func(t *testing.T) {
+	// Тест: Ошибка, если директория не существует
+	t.Run("ArchiveLog_DirectoryNotExist", func(t *testing.T) {
+		archiveDir := "testdata/nonexistent"
+		err := ArchiveLog(logFile, archiveDir)
+		if err == nil {
+			t.Fatalf("Expected error, got nil")
+		}
+
+		expectedError := "failed to create archive file"
+		if !strings.Contains(err.Error(), expectedError) {
+			t.Errorf("Expected error to contain '%s', got '%v'", expectedError, err)
+		}
+	})
+
+	// Тест: Ошибка, если файл не существует
+	t.Run("ArchiveLog_FileNotExist", func(t *testing.T) {
 		err := ArchiveLog("nonexistent.log", "")
 		if err == nil {
 			t.Fatalf("Expected error, got nil")
 		}
-	})
 
-	// Тест: Некорректная директория архивации
-	t.Run("ArchiveLog_InvalidArchiveDir", func(t *testing.T) {
-		err := ArchiveLog(logFile, "/nonexistent/directory")
-		if err == nil {
-			t.Fatalf("Expected error, got nil")
+		expectedError := "failed to get file info"
+		if !strings.Contains(err.Error(), expectedError) {
+			t.Errorf("Expected error to contain '%s', got '%v'", expectedError, err)
 		}
 	})
 
-	// Удаляем тестовые файлы
-	os.Remove(logFile)
-	os.RemoveAll("testdata")
+	// Тест: Ошибка, если нет прав на запись в директорию
+	t.Run("ArchiveLog_NoWritePermission", func(t *testing.T) {
+		// Создаём директорию без прав на запись
+		archiveDir := "testdata/readonly"
+		os.MkdirAll(archiveDir, 0444) // Только чтение
+		defer os.RemoveAll(archiveDir)
+
+		err := ArchiveLog(logFile, archiveDir)
+		if err == nil {
+			t.Fatalf("Expected error, got nil")
+		}
+
+		expectedError := "failed to create archive file"
+		if !strings.Contains(err.Error(), expectedError) {
+			t.Errorf("Expected error to contain '%s', got '%v'", expectedError, err)
+		}
+	})
 }
 
 func TestAddFileToArchive(t *testing.T) {
@@ -60,6 +95,12 @@ func TestAddFileToArchive(t *testing.T) {
 	logFile := "testdata/test.log"
 	os.Mkdir("testdata", 0755)
 	os.WriteFile(logFile, []byte("Test log content"), 0644)
+
+	// Автоматически удаляем тестовые файлы после завершения тестов
+	t.Cleanup(func() {
+		os.Remove(logFile)
+		os.RemoveAll("testdata")
+	})
 
 	// Открываем лог-файл
 	file, err := os.Open(logFile)
@@ -100,8 +141,4 @@ func TestAddFileToArchive(t *testing.T) {
 		// Удаляем архив
 		os.Remove("test.tar.gz")
 	})
-
-	// Удаляем тестовые файлы
-	os.Remove(logFile)
-	os.RemoveAll("testdata")
 }

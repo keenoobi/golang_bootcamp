@@ -6,6 +6,7 @@ import (
 	"os"
 	"strings"
 	"sync"
+	"unicode/utf8"
 )
 
 func Counter(files []string, wg *sync.WaitGroup, l, m, w bool) {
@@ -45,7 +46,7 @@ func CountAll(fileName string) (int, int, int, error) {
 	charsCount := 0
 	for scanner.Scan() {
 		line := scanner.Text()
-		charsCount += len(line)
+		charsCount += utf8.RuneCountInString(line)
 		words := strings.Fields(line)
 		wordsCount += len(words)
 		lineCount++

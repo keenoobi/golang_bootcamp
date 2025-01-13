@@ -16,13 +16,13 @@ func main() {
 
 	logFiles := flag.Args()
 	if len(logFiles) == 0 {
-		fmt.Println("error: no log files provided")
+		fmt.Fprintln(os.Stderr, "error: no log files provided")
 		os.Exit(1)
 	}
 
 	if archiveDir != "" {
 		if _, err := os.Stat(archiveDir); os.IsNotExist(err) {
-			fmt.Printf("error: archive directory %s does not exist\n", archiveDir)
+			fmt.Fprintf(os.Stderr, "error: archive directory %s does not exist\n", archiveDir)
 			os.Exit(1)
 		}
 	}
