@@ -7,6 +7,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 func ArchiveLog(logFile, archiveDir string) error {
@@ -15,7 +16,12 @@ func ArchiveLog(logFile, archiveDir string) error {
 		return fmt.Errorf("failed to get file info: %v", err)
 	}
 
-	baseName := filepath.Base(logFile)
+	// Проверка, что архивируется имено .log-файл
+	if filepath.Ext(logFile) != ".log" {
+		return fmt.Errorf("error: file %s is not a .log file", logFile)
+	}
+
+	baseName := filepath.Base(strings.TrimSuffix(logFile, filepath.Ext(logFile)))
 	timestamp := fileInfo.ModTime().Unix()
 
 	archiveName := fmt.Sprintf("%s_%d.tar.gz", baseName, timestamp)

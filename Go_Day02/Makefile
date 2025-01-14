@@ -19,6 +19,7 @@ bin:
 
 # Сборка билда
 build: bin build-find build-wc build-xargs build-rotate
+	@echo "Build was completed successfully"
 
 # Сборка myFind
 build-find: bin
@@ -64,8 +65,10 @@ run-xargs: build-xargs
 	@echo "cmd/\ninternal/\n../" | ./bin/$(BINARY_XARGS) ls -la
 
 # Запуск myRotate с аргументами
-# run-rotate: build-rotate
-# 	@./bin/$(BINARY_ROTATE) /path/to/logs/some_application.log
+run-rotate: build-rotate
+	@echo "some test log text" > some_app.log
+	@./bin/$(BINARY_ROTATE) some_app.log
+	@ls | grep "some_*"
 
 # Установка зависимостей
 deps:
