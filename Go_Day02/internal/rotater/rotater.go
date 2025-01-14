@@ -26,9 +26,11 @@ func ArchiveLog(logFile, archiveDir string) error {
 
 	archiveName := fmt.Sprintf("%s_%d.tar.gz", baseName, timestamp)
 
-	if archiveDir != "" {
-		archiveName = filepath.Join(archiveDir, archiveName)
+	if archiveDir == "" {
+		archiveDir = filepath.Dir(logFile)
 	}
+
+	archiveName = filepath.Join(archiveDir, archiveName)
 
 	archiveFile, err := os.Create(archiveName)
 	if err != nil {

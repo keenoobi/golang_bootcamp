@@ -44,6 +44,7 @@ clean:
 	rm -f bin/$(BINARY_WC)
 	rm -f bin/$(BINARY_XARGS)
 	rm -f bin/$(BINARY_ROTATE)
+	rm -f bin/some*
 	rm -f coverage.out coverage.html
 
 # Запуск тестов
@@ -66,9 +67,9 @@ run-xargs: build-xargs
 
 # Запуск myRotate с аргументами
 run-rotate: build-rotate
-	@echo "some test log text" > some_app.log
-	@./bin/$(BINARY_ROTATE) some_app.log
-	@ls | grep "some_*"
+	@echo "some test log text" > bin/some_app.log
+	@./bin/$(BINARY_ROTATE) bin/some_app.log
+	@ls bin/ | grep "some_*"
 
 # Установка зависимостей
 deps:

@@ -26,7 +26,24 @@ func TestArchiveLog(t *testing.T) {
 	})
 
 	// Тест: Успешная архивация файла
-	t.Run("ArchiveLog_Success", func(t *testing.T) {
+	t.Run("ArchiveLog_Success_SameDirectory", func(t *testing.T) {
+		err := ArchiveLog(logFile, "")
+		if err != nil {
+			t.Fatalf("Error archiving log file: %v", err)
+		}
+
+		// Проверяем, что архив создан в той же директории
+		archiveName := filepath.Join(filepath.Dir(logFile), "test_1600785299.tar.gz")
+		if _, err := os.Stat(archiveName); os.IsNotExist(err) {
+			t.Fatalf("Archive file %s was not created", archiveName)
+		}
+
+		// Удаляем архив
+		os.Remove(archiveName)
+	})
+
+	// Тест: Успешная архивация файла в указанной директории
+	t.Run("ArchiveLog_Success_SpecifiedDirectory", func(t *testing.T) {
 		// Создаём временную директорию для архива
 		archiveDir := "testdata/archive"
 		os.MkdirAll(archiveDir, 0755)
@@ -37,8 +54,8 @@ func TestArchiveLog(t *testing.T) {
 			t.Fatalf("Error archiving log file: %v", err)
 		}
 
-		// Проверяем, что архив создан
-		archiveName := filepath.Join(archiveDir, "test.log_1600785299.tar.gz")
+		// Проверяем, что архив создан в указанной директории
+		archiveName := filepath.Join(archiveDir, "test_1600785299.tar.gz")
 		if _, err := os.Stat(archiveName); os.IsNotExist(err) {
 			t.Fatalf("Archive file %s was not created", archiveName)
 		}
