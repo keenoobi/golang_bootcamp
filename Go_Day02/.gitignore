@@ -51,7 +51,8 @@ Mkfile.old
 dkms.conf
 !go.mod
 .DS_Store
-myFind
-myWc
-myRotate
-myXargs
+bin/myFind
+bin/myWc
+bin/myRotate
+bin/myXargs
+bin/some_*
